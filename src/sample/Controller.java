@@ -23,23 +23,29 @@ import static org.opencv.highgui.Highgui.imread;
 public class Controller {
     static {
         nu.pattern.OpenCV.loadShared();
+        System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
     }
     @FXML
     private ImageView img;
 
 
     public void start(ActionEvent actionEvent) {
-        Image image = new Image("file:///C:/1.jpg");
+        File fileName1 = new File("file:///C:/1.jpg");
+        Image image = new Image(fileName1.getPath());
         img.setImage(image);
      //   System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        File fileName1 = new File("file:///C:/1.jpg");
-        Mat initial_Image = Highgui.imread(fileName1.getAbsolutePath());
+       // File fileName1 = new File("file:///C:/1.jpg");
+        Mat initial_Image = Mat.eye(3, 3, CvType.CV_32F);
+              initial_Image  = imread(fileName1.getAbsolutePath());
+        String path  = fileName1.getPath();
+
         Mat hsvImage = new Mat();
         Mat mask = new Mat();
         Mat morphOutput = new Mat();
 
-        Imgproc.cvtColor(initial_Image, hsvImage, Imgproc.COLOR_BGR2HSV);
-        Scalar minValues = new Scalar(160,0,0);
+        Imgproc.cvtColor(initial_Image, hsvImage, Imgproc.COLOR_BGR2HSV,255);
+
+     /*   Scalar minValues = new Scalar(160,0,0);
         Scalar maxValues = new Scalar(180,255,255);
         Core.inRange(hsvImage, minValues, maxValues, mask);
         Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(24, 24));
@@ -59,6 +65,6 @@ public class Controller {
             {
                 Imgproc.drawContours(initial_Image, contours, idx, new Scalar(250, 0, 0));
             }
-        }
+        }*/
     }
 }
